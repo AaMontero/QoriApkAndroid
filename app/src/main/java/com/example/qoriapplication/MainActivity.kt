@@ -1,5 +1,7 @@
 package com.example.qoriapplication
 
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.KeyEvent
@@ -18,13 +20,19 @@ class MainActivity : AppCompatActivity() {
                 if (url != null && (url.startsWith("http://") || url.startsWith("https://"))) {
                     view?.loadUrl(url)
                     return true
-                } else {
+                } else if (url != null && (url.startsWith("tel:") || url.startsWith("whatsapp:"))) {
+                    val intent = Intent(Intent.ACTION_VIEW)
+                    intent.data = Uri.parse(url)
+                    startActivity(intent)
+                    return true
+                }
+
+                else {
                     return super.shouldOverrideUrlLoading(view, url)
                 }
             }
         }
         val ajustesVisorWeb: WebSettings = miVisorWeb.settings
-        ajustesVisorWeb.javaScriptEnabled = true
         ajustesVisorWeb.javaScriptEnabled = true
         miVisorWeb.loadUrl("https://travelqori.com/")
     }
